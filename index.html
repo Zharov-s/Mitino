@@ -8,7 +8,7 @@
   <meta content="telephone=no" name="format-detection">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="assets/css/style.css" rel="stylesheet">
+  <link href="assets/css/style.css?v=20260326-2" rel="stylesheet">
 </head>
 <body>
   <div aria-hidden="true" class="page-noise"></div>
@@ -572,7 +572,13 @@
             </label>
             <label class="full-width lot-select-wrap" id="lotSelectWrap">
               <span>Выбрать конкретный лот</span>
-              <select id="lotSelect" name="lot">
+              <div class="lot-select-ui" data-custom-select>
+                <button class="lot-select-trigger" type="button" aria-expanded="false" aria-controls="lotSelectMenu">
+                  <span class="lot-select-trigger-text">Нужен подбор подходящего варианта</span>
+                </button>
+                <div class="lot-select-menu" id="lotSelectMenu" role="listbox" aria-label="Выбор конкретного лота" hidden></div>
+              </div>
+              <select class="lot-select-native" id="lotSelect" name="lot">
                 <option value="">Нужен подбор подходящего варианта</option>
                 <option value="Лот 01 · Офис 896,94 м²">Лот 01 · Офис 896,94 м²</option>
                 <option value="Лот 02 · Офис 429,79 м²">Лот 02 · Офис 429,79 м²</option>
@@ -629,6 +635,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/main.js"></script>
+  <script src="assets/js/main.js?v=20260326-2"></script>
 </body>
 </html>

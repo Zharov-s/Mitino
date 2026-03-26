@@ -290,8 +290,110 @@ document.addEventListener('DOMContentLoaded', () => {
   const lotRequestButtons = [...document.querySelectorAll('[data-request-lot]')];
   const contactsSection = document.getElementById('contacts');
   const lotSelect = document.getElementById('lotSelect');
+  const customLotSelect = document.querySelector('[data-custom-select]');
+  const lotSelectTrigger = customLotSelect?.querySelector('.lot-select-trigger');
+  const lotSelectTriggerText = customLotSelect?.querySelector('.lot-select-trigger-text');
+  const lotSelectMenu = customLotSelect?.querySelector('.lot-select-menu');
   const selectedLotBox = document.getElementById('selectedLotBox');
   const changeLotButton = document.getElementById('changeLotButton');
+
+  const setLotSelectOpen = (isOpen) => {
+    if (!customLotSelect || !lotSelectTrigger || !lotSelectMenu) return;
+    customLotSelect.classList.toggle('open', isOpen);
+    lotSelectTrigger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    lotSelectMenu.hidden = !isOpen;
+  };
+
+  const renderLotSelectOptions = () => {
+    if (!lotSelect || !lotSelectMenu || !lotSelectTriggerText) return;
+
+    lotSelectMenu.innerHTML = '';
+    [...lotSelect.options].forEach((option) => {
+      const optionButton = document.createElement('button');
+      optionButton.type = 'button';
+      optionButton.className = 'lot-select-option';
+      optionButton.textContent = option.textContent || '';
+      optionButton.dataset.value = option.value;
+      optionButton.setAttribute('role', 'option');
+      optionButton.setAttribute('aria-selected', option.selected ? 'true' : 'false');
+      optionButton.classList.toggle('is-selected', option.selected);
+
+      optionButton.addEventListener('click', () => {
+        lotSelect.value = option.value;
+        lotSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        setLotSelectOpen(false);
+        lotSelectTrigger.focus();
+      });
+
+      lotSelectMenu.appendChild(optionButton);
+    });
+
+    const selectedOption = lotSelect.options[lotSelect.selectedIndex] || lotSelect.options[0];
+    lotSelectTriggerText.textContent = selectedOption?.textContent || '';
+  };
+
+  const syncCustomLotSelect = () => {
+    if (!lotSelect || !lotSelectMenu || !lotSelectTriggerText) return;
+
+    const selectedValue = lotSelect.value;
+    [...lotSelectMenu.querySelectorAll('.lot-select-option')].forEach((button) => {
+      const isSelected = button.dataset.value === selectedValue;
+      const shouldHighlightFallback = !selectedValue && button.dataset.value === '';
+      button.classList.toggle('is-selected', isSelected || shouldHighlightFallback);
+      button.setAttribute('aria-selected', isSelected || shouldHighlightFallback ? 'true' : 'false');
+    });
+
+    const selectedOption = lotSelect.options[lotSelect.selectedIndex] || lotSelect.options[0];
+    lotSelectTriggerText.textContent = selectedOption?.textContent || '';
+  };
+
+  if (lotSelect && customLotSelect && lotSelectTrigger && lotSelectMenu) {
+    renderLotSelectOptions();
+    syncCustomLotSelect();
+
+    lotSelectTrigger.addEventListener('click', () => {
+      const isOpen = customLotSelect.classList.contains('open');
+      setLotSelectOpen(!isOpen);
+    });
+
+    lotSelectTrigger.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        setLotSelectOpen(true);
+        lotSelectMenu.querySelector('.lot-select-option.is-selected, .lot-select-option')?.focus();
+      }
+      if (event.key === 'Escape') {
+        setLotSelectOpen(false);
+      }
+    });
+
+    lotSelectMenu.addEventListener('keydown', (event) => {
+      const optionButtons = [...lotSelectMenu.querySelectorAll('.lot-select-option')];
+      const currentIndex = optionButtons.findIndex((button) => button === document.activeElement);
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setLotSelectOpen(false);
+        lotSelectTrigger.focus();
+      }
+
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        optionButtons[(currentIndex + 1 + optionButtons.length) % optionButtons.length]?.focus();
+      }
+
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        optionButtons[(currentIndex - 1 + optionButtons.length) % optionButtons.length]?.focus();
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!customLotSelect.contains(event.target)) {
+        setLotSelectOpen(false);
+      }
+    });
+  }
 
   const updateSelectedLotUi = (lotLabel) => {
     if (!selectedLotBox || !lotSelect || !changeLotButton) return;
@@ -314,6 +416,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!lotSelect) return;
     const optionExists = [...lotSelect.options].some((option) => option.value === lotLabel);
     lotSelect.value = optionExists ? lotLabel : '';
+    syncCustomLotSelect();
     updateSelectedLotUi(lotSelect.value);
   };
 
@@ -322,16 +425,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const lotLabel = button.dataset.requestLot || '';
       selectLot(lotLabel);
       contactsSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      lotSelect?.focus();
+      lotSelectTrigger?.focus();
     });
   });
 
   lotSelect?.addEventListener('change', () => {
+    syncCustomLotSelect();
     updateSelectedLotUi(lotSelect.value);
   });
 
   changeLotButton?.addEventListener('click', () => {
-    lotSelect?.focus();
+    lotSelectTrigger?.focus();
+    setLotSelectOpen(true);
   });
 
   updateSelectedLotUi(lotSelect?.value || '');
