@@ -25,6 +25,80 @@ document.addEventListener('DOMContentLoaded', () => {
   updateScrollUi();
   window.addEventListener('scroll', updateScrollUi, { passive: true });
 
+  const mapAnnotationMedia = document.querySelector('[data-map-annotation]');
+  if (mapAnnotationMedia) {
+    const mapImage = mapAnnotationMedia.querySelector('img');
+    const syncMapAnnotationBounds = () => {
+      if (!(mapImage instanceof HTMLImageElement)) return;
+
+      const boxWidth = mapImage.clientWidth;
+      const boxHeight = mapImage.clientHeight;
+      const naturalWidth = mapImage.naturalWidth || 1628;
+      const naturalHeight = mapImage.naturalHeight || 960;
+
+      if (!boxWidth || !boxHeight || !naturalWidth || !naturalHeight) return;
+
+      const imageRatio = naturalWidth / naturalHeight;
+      const boxRatio = boxWidth / boxHeight;
+
+      let renderedWidth = boxWidth;
+      let renderedHeight = boxHeight;
+
+      if (imageRatio > boxRatio) {
+        renderedHeight = boxWidth / imageRatio;
+      } else {
+        renderedWidth = boxHeight * imageRatio;
+      }
+
+      const offsetLeft = (boxWidth - renderedWidth) / 2;
+      const offsetTop = (boxHeight - renderedHeight) / 2;
+
+      mapAnnotationMedia.style.setProperty('--map-image-left', `${offsetLeft}px`);
+      mapAnnotationMedia.style.setProperty('--map-image-top', `${offsetTop}px`);
+      mapAnnotationMedia.style.setProperty('--map-image-width', `${renderedWidth}px`);
+      mapAnnotationMedia.style.setProperty('--map-image-height', `${renderedHeight}px`);
+    };
+
+    syncMapAnnotationBounds();
+    if (mapImage instanceof HTMLImageElement && !mapImage.complete) {
+      mapImage.addEventListener('load', syncMapAnnotationBounds, { once: true });
+    }
+    window.addEventListener('resize', syncMapAnnotationBounds);
+
+    if ('IntersectionObserver' in window) {
+      const mapAnnotationObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            mapAnnotationMedia.classList.add('map-annotation-visible');
+            mapAnnotationObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.38 });
+
+      mapAnnotationObserver.observe(mapAnnotationMedia);
+    } else {
+      mapAnnotationMedia.classList.add('map-annotation-visible');
+    }
+  }
+
+  const constructionTimeline = document.querySelector('[data-construction-progress]');
+  if (constructionTimeline) {
+    if ('IntersectionObserver' in window) {
+      const constructionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            constructionTimeline.classList.add('is-animated');
+            constructionObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.35 });
+
+      constructionObserver.observe(constructionTimeline);
+    } else {
+      constructionTimeline.classList.add('is-animated');
+    }
+  }
+
   // Hero stats counters
   const statCounters = [...document.querySelectorAll('.stat-value[data-count]')];
   const compositeCounters = [...document.querySelectorAll('.stat-value[data-counter-type="quarter-year"]')];
@@ -288,6 +362,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // "Leave request" buttons for lots
   const lotRequestButtons = [...document.querySelectorAll('[data-request-lot]')];
+  const lotLayoutButtons = [...document.querySelectorAll('[data-request-layout]')];
+  const topicRequestLinks = [...document.querySelectorAll('[data-request-topic]')];
   const contactsSection = document.getElementById('contacts');
   const lotSelect = document.getElementById('lotSelect');
   const customLotSelect = document.querySelector('[data-custom-select]');
@@ -296,6 +372,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const lotSelectMenu = customLotSelect?.querySelector('.lot-select-menu');
   const selectedLotBox = document.getElementById('selectedLotBox');
   const changeLotButton = document.getElementById('changeLotButton');
+  const messageField = document.getElementById('leadMessage');
+  const requestTypeField = document.getElementById('requestTypeField');
+  const phoneField = document.getElementById('leadPhone');
+  const nameField = document.getElementById('leadName');
+  const consentField = document.getElementById('leadConsent');
 
   const setLotSelectOpen = (isOpen) => {
     if (!customLotSelect || !lotSelectTrigger || !lotSelectMenu) return;
@@ -420,12 +501,57 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSelectedLotUi(lotSelect.value);
   };
 
+  const setRequestContext = ({ topic = '', lotLabel = '', appendMessage = '' } = {}) => {
+    if (topic && requestTypeField) {
+      requestTypeField.value = topic;
+    }
+
+    if (lotLabel) {
+      selectLot(lotLabel);
+    }
+
+    if (appendMessage && messageField instanceof HTMLTextAreaElement) {
+      const currentValue = messageField.value.trim();
+      const nextValue = currentValue ? `${currentValue}\n${appendMessage}` : appendMessage;
+      if (!currentValue.includes(appendMessage)) {
+        messageField.value = nextValue;
+      }
+    }
+  };
+
   lotRequestButtons.forEach((button) => {
     button.addEventListener('click', () => {
       const lotLabel = button.dataset.requestLot || '';
-      selectLot(lotLabel);
+      setRequestContext({
+        topic: 'Запросить этот лот',
+        lotLabel,
+        appendMessage: `Интересует ${lotLabel}. Прошу связаться и обсудить условия аренды.`
+      });
       contactsSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      lotSelectTrigger?.focus();
+      messageField?.focus();
+    });
+  });
+
+  lotLayoutButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const lotLabel = button.dataset.requestLayout || '';
+      setRequestContext({
+        topic: 'Получить планировку',
+        lotLabel,
+        appendMessage: `Прошу направить планировку по лоту: ${lotLabel}.`
+      });
+      contactsSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      messageField?.focus();
+    });
+  });
+
+  topicRequestLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      const topic = link.dataset.requestTopic || '';
+      setRequestContext({
+        topic,
+        appendMessage: topic ? `Интересует запрос: ${topic}.` : ''
+      });
     });
   });
 
@@ -452,19 +578,61 @@ document.addEventListener('DOMContentLoaded', () => {
     if (type) formStatus.classList.add(type);
   };
 
+  const validateLeadForm = ({ report = false } = {}) => {
+    const nameValue = String(nameField?.value || '').trim();
+    const phoneValue = String(phoneField?.value || '').trim();
+
+    if (nameField instanceof HTMLInputElement) {
+      nameField.setCustomValidity(nameValue.length >= 2 ? '' : 'Укажите имя не короче 2 символов.');
+    }
+
+    if (phoneField instanceof HTMLInputElement) {
+      const normalizedPhone = phoneValue.replace(/[^\d+]/g, '');
+      phoneField.setCustomValidity(normalizedPhone.length >= 10 ? '' : 'Укажите корректный номер телефона.');
+    }
+
+    if (consentField instanceof HTMLInputElement) {
+      consentField.setCustomValidity(consentField.checked ? '' : 'Нужно согласие на обработку персональных данных.');
+    }
+
+    const isValid = leadForm instanceof HTMLFormElement
+      ? (report ? leadForm.reportValidity() : leadForm.checkValidity())
+      : false;
+    return isValid;
+  };
+
+  [nameField, phoneField, consentField].forEach((field) => {
+    field?.addEventListener('input', () => validateLeadForm());
+    field?.addEventListener('change', () => validateLeadForm());
+  });
+
   leadForm?.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!(leadForm instanceof HTMLFormElement)) return;
 
+    if (!validateLeadForm({ report: true })) {
+      setFormStatus('Проверьте обязательные поля формы и согласие на обработку данных.', 'error');
+      return;
+    }
+
     const submitButton = leadForm.querySelector('button[type="submit"]');
-    if (submitButton instanceof HTMLButtonElement) submitButton.disabled = true;
+    const initialSubmitText = submitButton instanceof HTMLButtonElement ? submitButton.textContent : '';
+    if (submitButton instanceof HTMLButtonElement) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Отправляем...';
+      submitButton.setAttribute('aria-busy', 'true');
+    }
     setFormStatus('Отправляем заявку...');
 
     const formData = new FormData(leadForm);
     const honeypot = String(formData.get('website') || '').trim();
     if (honeypot) {
       setFormStatus('Ошибка проверки формы. Обновите страницу и попробуйте снова.', 'error');
-      if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+      if (submitButton instanceof HTMLButtonElement) {
+        submitButton.disabled = false;
+        submitButton.textContent = initialSubmitText;
+        submitButton.removeAttribute('aria-busy');
+      }
       return;
     }
 
@@ -483,11 +651,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
       setFormStatus('Заявка отправлена. Мы свяжемся с вами в рабочее время.', 'success');
       leadForm.reset();
+      if (requestTypeField instanceof HTMLInputElement) requestTypeField.value = '';
+      syncCustomLotSelect();
       updateSelectedLotUi('');
     } catch (error) {
       setFormStatus('Не удалось отправить заявку. Проверьте интернет или свяжитесь по телефону.', 'error');
     } finally {
-      if (submitButton instanceof HTMLButtonElement) submitButton.disabled = false;
+      if (submitButton instanceof HTMLButtonElement) {
+        submitButton.disabled = false;
+        submitButton.textContent = initialSubmitText;
+        submitButton.removeAttribute('aria-busy');
+      }
     }
   });
 });
