@@ -20,65 +20,64 @@ document.addEventListener('DOMContentLoaded', () => {
     const max = document.documentElement.scrollHeight - window.innerHeight;
     const ratio = max > 0 ? (window.scrollY / max) * 100 : 0;
     if (progress) progress.style.width = `${Math.min(100, Math.max(0, ratio))}%`;
+    document.body.style.setProperty('--scroll-progress', `${Math.min(100, Math.max(0, ratio))}`);
     if (header) header.classList.toggle('scrolled', window.scrollY > 12);
   };
   updateScrollUi();
   window.addEventListener('scroll', updateScrollUi, { passive: true });
 
-  const mapAnnotationMedia = document.querySelector('[data-map-annotation]');
-  if (mapAnnotationMedia) {
-    const mapImage = mapAnnotationMedia.querySelector('img');
-    const syncMapAnnotationBounds = () => {
-      if (!(mapImage instanceof HTMLImageElement)) return;
+  const locationMap = document.querySelector('#locationMap');
+  if (locationMap) {
+    const routeButton = document.querySelector('[data-route-button]');
+    const centerLat = Number(locationMap.dataset.mapCenterLat);
+    const centerLon = Number(locationMap.dataset.mapCenterLon);
+    const pointLat = Number(locationMap.dataset.mapPointLat);
+    const pointLon = Number(locationMap.dataset.mapPointLon);
+    const zoom = Number(locationMap.dataset.mapZoom || 17);
 
-      const boxWidth = mapImage.clientWidth;
-      const boxHeight = mapImage.clientHeight;
-      const naturalWidth = mapImage.naturalWidth || 1628;
-      const naturalHeight = mapImage.naturalHeight || 960;
+    if (routeButton instanceof HTMLAnchorElement) {
+      const routeUrl = new URL('https://yandex.ru/maps/213/moscow/');
+      routeUrl.searchParams.set('mode', 'routes');
+      routeUrl.searchParams.set('ll', `${centerLon},${centerLat}`);
+      routeUrl.searchParams.set('rtext', `~${pointLat},${pointLon}`);
+      routeUrl.searchParams.set('rtt', 'auto');
+      routeUrl.searchParams.set('z', String(zoom));
+      routeButton.href = routeUrl.toString();
+    }
 
-      if (!boxWidth || !boxHeight || !naturalWidth || !naturalHeight) return;
+    const initLocationMap = () => {
+      if (!window.ymaps || locationMap.dataset.mapReady === 'true') return;
 
-      const imageRatio = naturalWidth / naturalHeight;
-      const boxRatio = boxWidth / boxHeight;
+      const map = new window.ymaps.Map('locationMap', {
+        center: [centerLat, centerLon],
+        zoom,
+        controls: ['zoomControl', 'fullscreenControl']
+      }, {
+        suppressMapOpenBlock: true
+      });
 
-      let renderedWidth = boxWidth;
-      let renderedHeight = boxHeight;
+      const placemark = new window.ymaps.Placemark([pointLat, pointLon], {
+        balloonContentHeader: 'Промтехнопарк',
+        balloonContentBody: 'Москва, ул. Барышиха, вл. 32',
+        hintContent: 'Промтехнопарк',
+        iconCaption: 'Промтехнопарк'
+      }, {
+        preset: 'islands#redDotIconWithCaption'
+      });
 
-      if (imageRatio > boxRatio) {
-        renderedHeight = boxWidth / imageRatio;
-      } else {
-        renderedWidth = boxHeight * imageRatio;
-      }
-
-      const offsetLeft = (boxWidth - renderedWidth) / 2;
-      const offsetTop = (boxHeight - renderedHeight) / 2;
-
-      mapAnnotationMedia.style.setProperty('--map-image-left', `${offsetLeft}px`);
-      mapAnnotationMedia.style.setProperty('--map-image-top', `${offsetTop}px`);
-      mapAnnotationMedia.style.setProperty('--map-image-width', `${renderedWidth}px`);
-      mapAnnotationMedia.style.setProperty('--map-image-height', `${renderedHeight}px`);
+      map.geoObjects.add(placemark);
+      map.behaviors.disable('scrollZoom');
+      locationMap.dataset.mapReady = 'true';
     };
 
-    syncMapAnnotationBounds();
-    if (mapImage instanceof HTMLImageElement && !mapImage.complete) {
-      mapImage.addEventListener('load', syncMapAnnotationBounds, { once: true });
-    }
-    window.addEventListener('resize', syncMapAnnotationBounds);
+    const tryInitMap = () => {
+      if (window.ymaps && typeof window.ymaps.ready === 'function') {
+        window.ymaps.ready(initLocationMap);
+      }
+    };
 
-    if ('IntersectionObserver' in window) {
-      const mapAnnotationObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            mapAnnotationMedia.classList.add('map-annotation-visible');
-            mapAnnotationObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.38 });
-
-      mapAnnotationObserver.observe(mapAnnotationMedia);
-    } else {
-      mapAnnotationMedia.classList.add('map-annotation-visible');
-    }
+    tryInitMap();
+    window.addEventListener('load', tryInitMap, { once: true });
   }
 
   const constructionTimeline = document.querySelector('[data-construction-progress]');
@@ -226,6 +225,14 @@ document.addEventListener('DOMContentLoaded', () => {
       render(currentIndex + 1);
     });
 
+    [prevBtn, nextBtn].forEach((control, index) => {
+      control?.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        render(currentIndex + (index === 0 ? -1 : 1));
+      });
+    });
+
     dots.forEach((dot, i) => {
       dot.setAttribute('role', 'button');
       dot.setAttribute('tabindex', '0');
@@ -254,6 +261,12 @@ document.addEventListener('DOMContentLoaded', () => {
   if (lobbyTrack && lobbyPrevBtn && lobbyNextBtn) {
     const lobbyCards = [...lobbyTrack.querySelectorAll('.lobby-card')];
 
+    const setArrowDisabled = (control, isDisabled) => {
+      control.classList.toggle('is-disabled', isDisabled);
+      control.setAttribute('aria-disabled', isDisabled ? 'true' : 'false');
+      control.tabIndex = isDisabled ? -1 : 0;
+    };
+
     const getStep = () => {
       if (lobbyCards.length < 2) return lobbyTrack.clientWidth;
       const firstCard = lobbyCards[0];
@@ -265,8 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateLobbyControls = () => {
       const maxScroll = Math.max(0, lobbyTrack.scrollWidth - lobbyTrack.clientWidth);
-      lobbyPrevBtn.disabled = lobbyTrack.scrollLeft <= 4;
-      lobbyNextBtn.disabled = lobbyTrack.scrollLeft >= maxScroll - 4;
+      setArrowDisabled(lobbyPrevBtn, lobbyTrack.scrollLeft <= 4);
+      setArrowDisabled(lobbyNextBtn, lobbyTrack.scrollLeft >= maxScroll - 4);
     };
 
     const scrollLobby = (direction) => {
@@ -276,8 +289,24 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     };
 
-    lobbyPrevBtn.addEventListener('click', () => scrollLobby(-1));
-    lobbyNextBtn.addEventListener('click', () => scrollLobby(1));
+    lobbyPrevBtn.addEventListener('click', () => {
+      if (lobbyPrevBtn.classList.contains('is-disabled')) return;
+      scrollLobby(-1);
+    });
+
+    lobbyNextBtn.addEventListener('click', () => {
+      if (lobbyNextBtn.classList.contains('is-disabled')) return;
+      scrollLobby(1);
+    });
+
+    [lobbyPrevBtn, lobbyNextBtn].forEach((control, index) => {
+      control.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        if (control.classList.contains('is-disabled')) return;
+        scrollLobby(index === 0 ? -1 : 1);
+      });
+    });
 
     lobbyTrack.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowLeft') {
@@ -293,6 +322,219 @@ document.addEventListener('DOMContentLoaded', () => {
     lobbyTrack.addEventListener('scroll', updateLobbyControls, { passive: true });
     window.addEventListener('resize', updateLobbyControls);
     updateLobbyControls();
+  }
+
+  const newsFeature = document.querySelector('.news-feature');
+  const newsSlidesContainer = document.querySelector('.news-feature-slides');
+  const newsSlides = [...document.querySelectorAll('[data-news-slide]')];
+  const newsPrevButtons = [...document.querySelectorAll('[data-news-prev]')];
+  const newsNextButtons = [...document.querySelectorAll('[data-news-next]')];
+
+  if (newsSlides.length > 1 && (newsPrevButtons.length || newsNextButtons.length)) {
+    let activeNewsIndex = Math.max(0, newsSlides.findIndex((slide) => slide.classList.contains('is-active')));
+    if (activeNewsIndex < 0) activeNewsIndex = 0;
+    let isNewsTransitioning = false;
+    let newsTransitionTimer = null;
+    let latchedNewsSelector = null;
+
+    const setArrowDisabled = (control, isDisabled) => {
+      control.classList.toggle('is-disabled', isDisabled);
+      control.setAttribute('aria-disabled', isDisabled ? 'true' : 'false');
+      control.tabIndex = isDisabled ? -1 : 0;
+    };
+
+    const updateNewsControls = () => {
+      const isFirst = activeNewsIndex <= 0;
+      const isLast = activeNewsIndex >= newsSlides.length - 1;
+      newsPrevButtons.forEach((button) => setArrowDisabled(button, isFirst));
+      newsNextButtons.forEach((button) => setArrowDisabled(button, isLast));
+    };
+
+    const focusActiveNewsControl = (selector) => {
+      const activeSlide = newsSlides[activeNewsIndex];
+      const control = activeSlide?.querySelector(selector);
+      if (!control || control.classList.contains('is-disabled')) return;
+      control.focus({ preventScroll: true });
+    };
+
+    const applyLatchedState = (selector) => {
+      latchedNewsSelector = selector;
+      [...document.querySelectorAll('[data-news-prev], [data-news-next]')].forEach((button) => {
+        button.classList.remove('is-latched');
+      });
+
+      if (!selector) return;
+
+      [...document.querySelectorAll(selector)].forEach((button) => {
+        button.classList.add('is-latched');
+      });
+    };
+
+    const syncNewsFeatureHeight = () => {
+      if (!newsSlidesContainer) return;
+
+      let maxHeight = 0;
+
+      newsSlides.forEach((slide) => {
+        const wasActive = slide.classList.contains('is-active');
+
+        slide.classList.add('is-active', 'is-measuring');
+        maxHeight = Math.max(maxHeight, slide.offsetHeight);
+        slide.classList.remove('is-measuring');
+
+        if (!wasActive) {
+          slide.classList.remove('is-active');
+        }
+      });
+
+      if (maxHeight > 0) {
+        newsSlidesContainer.style.setProperty('--news-feature-height', `${maxHeight}px`);
+
+        if (window.innerWidth <= 900) {
+          newsSlidesContainer.style.minHeight = `${maxHeight}px`;
+          newsSlidesContainer.style.height = `${maxHeight}px`;
+        } else {
+          newsSlidesContainer.style.minHeight = `${maxHeight}px`;
+          newsSlidesContainer.style.height = '';
+        }
+      }
+    };
+
+    const renderNewsSlide = (index, focusSelector = null, pressedSelector = null) => {
+      const previousTop = newsFeature?.getBoundingClientRect().top ?? 0;
+
+      activeNewsIndex = Math.max(0, Math.min(newsSlides.length - 1, index));
+      newsSlides.forEach((slide, slideIndex) => {
+        slide.classList.toggle('is-active', slideIndex === activeNewsIndex);
+      });
+      updateNewsControls();
+      applyLatchedState(latchedNewsSelector);
+      syncNewsFeatureHeight();
+
+      const nextTop = newsFeature?.getBoundingClientRect().top ?? 0;
+      const offsetDelta = nextTop - previousTop;
+      if (Math.abs(offsetDelta) > 1) {
+        window.scrollBy(0, offsetDelta);
+      }
+
+      if (focusSelector) {
+        requestAnimationFrame(() => focusActiveNewsControl(focusSelector));
+      }
+
+      if (pressedSelector) {
+        requestAnimationFrame(() => pulsePressedState(pressedSelector, 560));
+      }
+
+      if (newsTransitionTimer) {
+        window.clearTimeout(newsTransitionTimer);
+      }
+
+      isNewsTransitioning = true;
+      newsTransitionTimer = window.setTimeout(() => {
+        isNewsTransitioning = false;
+      }, 380);
+    };
+
+    const showNextNews = (focusSelector = null, pressedSelector = null) => {
+      renderNewsSlide(activeNewsIndex + 1, focusSelector, pressedSelector);
+    };
+
+    const showPrevNews = (focusSelector = null, pressedSelector = null) => {
+      renderNewsSlide(activeNewsIndex - 1, focusSelector, pressedSelector);
+    };
+
+    const pressTimers = new WeakMap();
+
+    const setPressedState = (buttons, isPressed) => {
+      buttons.forEach((control) => {
+        control.classList.toggle('is-pressed', isPressed && !control.classList.contains('is-disabled'));
+      });
+    };
+
+    const pulsePressedState = (selector, duration = 180) => {
+      const buttons = [...document.querySelectorAll(selector)];
+      setPressedState(buttons, true);
+
+      buttons.forEach((button) => {
+        const timer = pressTimers.get(button);
+        if (timer) window.clearTimeout(timer);
+
+        const nextTimer = window.setTimeout(() => {
+          button.classList.remove('is-pressed');
+          pressTimers.delete(button);
+        }, duration);
+
+        pressTimers.set(button, nextTimer);
+      });
+    };
+
+    const bindPressedState = (button, selector) => {
+      const clearPressedState = () => {
+        const timer = pressTimers.get(button);
+        if (timer) {
+          window.clearTimeout(timer);
+          pressTimers.delete(button);
+        }
+        button.classList.remove('is-pressed');
+      };
+
+      button.addEventListener('pointerdown', (event) => {
+        event.preventDefault();
+        if (button.classList.contains('is-disabled')) return;
+        pulsePressedState(selector);
+      });
+
+      button.addEventListener('pointercancel', clearPressedState);
+      button.addEventListener('pointerleave', clearPressedState);
+      button.addEventListener('blur', clearPressedState);
+      button.addEventListener('dragstart', (event) => event.preventDefault());
+    };
+
+    newsPrevButtons.forEach((button) => {
+      bindPressedState(button, '[data-news-prev]');
+
+      button.addEventListener('click', () => {
+        if (button.classList.contains('is-disabled') || isNewsTransitioning) return;
+        button.blur();
+        applyLatchedState('[data-news-prev]');
+        window.setTimeout(() => {
+          showPrevNews(null, '[data-news-prev]');
+        }, 110);
+      });
+
+      button.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        if (button.classList.contains('is-disabled') || isNewsTransitioning) return;
+        applyLatchedState('[data-news-prev]');
+        showPrevNews('[data-news-prev]', '[data-news-prev]');
+      });
+    });
+
+    newsNextButtons.forEach((button) => {
+      bindPressedState(button, '[data-news-next]');
+
+      button.addEventListener('click', () => {
+        if (button.classList.contains('is-disabled') || isNewsTransitioning) return;
+        button.blur();
+        applyLatchedState('[data-news-next]');
+        window.setTimeout(() => {
+          showNextNews(null, '[data-news-next]');
+        }, 110);
+      });
+
+      button.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        if (button.classList.contains('is-disabled') || isNewsTransitioning) return;
+        applyLatchedState('[data-news-next]');
+        showNextNews('[data-news-next]', '[data-news-next]');
+      });
+    });
+
+    syncNewsFeatureHeight();
+    window.addEventListener('resize', syncNewsFeatureHeight);
+    renderNewsSlide(activeNewsIndex);
   }
 
   // Mobile menu
@@ -359,6 +601,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const activeFilterButton = filterButtons.find((button) => button.classList.contains('active'));
   applyFilter(activeFilterButton?.dataset.filter || 'all');
+
+  // Accent tab-link style buttons
+  const tabLinks = [...document.querySelectorAll('[data-tab-link]')];
+  tabLinks.forEach((link) => {
+    const activate = () => link.classList.add('is-hovered');
+    const deactivate = () => link.classList.remove('is-hovered');
+
+    link.addEventListener('mouseenter', activate);
+    link.addEventListener('mouseleave', deactivate);
+    link.addEventListener('focus', activate);
+    link.addEventListener('blur', deactivate);
+  });
 
   // "Leave request" buttons for lots
   const lotRequestButtons = [...document.querySelectorAll('[data-request-lot]')];
@@ -488,7 +742,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     selectedLotBox.classList.add('selected-lot--empty');
-    selectedLotBox.innerHTML = '<span>Лот не выбран. Оставьте заявку, и мы подберем подходящий вариант.</span>';
+    selectedLotBox.innerHTML = '';
     changeLotButton.hidden = true;
     selectedLotBox.appendChild(changeLotButton);
   };

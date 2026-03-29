@@ -18,10 +18,10 @@
   <meta content="Аренда помещений в промтехнопарке в Митино" name="twitter:title">
   <meta content="Производственные, офисные и коммерческие помещения в аренду в Митино. Подбор лотов и материалов по запросу." name="twitter:description">
   <meta content="https://promtechnopark-mitino.ru/assets/images/hero.jpg" name="twitter:image">
-  <link href="assets/images/common/brand-mark.svg" rel="icon" type="image/svg+xml">
+  <link href="assets/images/common/logo.svg" rel="icon" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <meta content="#17191d" name="theme-color">
+  <meta content="#FFFFFF" name="theme-color">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -53,19 +53,23 @@
       gaMeasurementId: ''
     };
   </script>
-  <link href="assets/css/style.css?v=20260326-3" rel="stylesheet">
+  <link href="assets/css/style.css?v=20260329-2" rel="stylesheet">
+  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" defer></script>
 </head>
 <body>
   <div aria-hidden="true" class="page-noise"></div>
   <div class="progress-line" id="progressLine"></div>
+  <a class="page-back-top" href="#hero" aria-label="Перейти вверх">
+    <span class="page-back-top-label">перейти вверх</span>
+    <span aria-hidden="true" class="page-back-top-line">
+      <span class="page-back-top-line-fill"></span>
+    </span>
+  </a>
 
   <header class="site-header" id="siteHeader">
     <div class="container header-inner">
       <a aria-label="На главную" class="brand" href="#hero">
-        <span class="brand-copy">
-          <strong>ПРОМТЕХНОПАРК</strong>
-          <small>Москва, ул. Барышиха, вл. 32</small>
-        </span>
+        <img alt="Промтехнопарк" class="brand-logo-image" src="assets/images/Logo.png">
       </a>
 
       <nav aria-label="Основная навигация" class="header-nav">
@@ -79,7 +83,10 @@
 
       <div class="header-cta">
         <a class="header-phone" href="tel:+79585004830">+7 (958) 500-48-30</a>
-        <a class="button button-accent" href="#contacts">Оставить заявку</a>
+        <a class="button button-accent tab-link-button" href="#contacts" data-tab-link>
+          <span class="tab-link-arrow" aria-hidden="true"></span>
+          <span class="tab-link-label">Оставить заявку</span>
+        </a>
       </div>
 
       <button aria-expanded="false" aria-label="Открыть меню" class="burger" id="burger" type="button">
@@ -111,13 +118,13 @@
           <div class="hero-topline">Аренда помещений для light industrial, офиса и коммерческих форматов</div>
           <h1 class="hero-title reveal delay-1">Бутик-промтехнопарк класса А+ в Митино для производства и бизнеса</h1>
           <p class="hero-text reveal delay-2">6 форматов аренды: производство, офисы, showroom и комплексные блоки. Москва, ул. Барышиха, вл. 32, удобный выезд на Пятницкое шоссе, мощность 1,5 МВт и понятные коммерческие условия для бизнеса.</p>
-          <div class="hero-actions reveal delay-3">
-            <a class="button button-accent" href="#contacts" data-cta="hero-request">Оставить заявку</a>
-            <a class="button button-ghost" href="#lots" data-cta="hero-lots">Смотреть лоты</a>
-          </div>
           <div class="hero-resource-actions reveal delay-3">
-            <a class="button button-secondary" href="https://drive.google.com/uc?export=download&id=1wudVev5-uGUope2W4QtkCcBp-7txroJy" data-cta="hero-presentation" target="_blank" rel="noopener noreferrer">Скачать презентацию</a>
-            <a class="button button-secondary" href="#contacts" data-request-topic="Запросить коммерческое предложение" data-cta="hero-commercial-offer">Запросить коммерческое предложение</a>
+            <a class="button button-accent hero-lots-button tab-link-button" href="#lots" data-cta="hero-lots" data-tab-link>
+              <span class="tab-link-arrow" aria-hidden="true"></span>
+              <span class="tab-link-label">Смотреть лоты</span>
+            </a>
+            <a class="button button-secondary hero-swap-button hero-swap-button-dark" href="https://drive.google.com/uc?export=download&id=1wudVev5-uGUope2W4QtkCcBp-7txroJy" data-cta="hero-presentation" target="_blank" rel="noopener noreferrer"><span>Скачать презентацию</span></a>
+            <a class="button button-secondary hero-swap-button hero-swap-button-light" href="#contacts" data-request-topic="Запросить коммерческое предложение" data-cta="hero-commercial-offer"><span>Запросить коммерческое предложение</span></a>
           </div>
         </div>
 
@@ -145,37 +152,21 @@
       </div>
     </section>
 
-    <section aria-label="AB Centrum" class="brand-marquee-section">
-      <div class="brand-marquee-shell reveal">
-        <div class="brand-marquee">
-          <div class="brand-marquee-track">
-            <div class="brand-marquee-item"><img alt="AB Centrum" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div class="brand-marquee-item"><img alt="AB Centrum" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div class="brand-marquee-item"><img alt="AB Centrum" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div class="brand-marquee-item"><img alt="AB Centrum" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div class="brand-marquee-item"><img alt="AB Centrum" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div class="brand-marquee-item"><img alt="AB Centrum" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div aria-hidden="true" class="brand-marquee-item"><img alt="" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div aria-hidden="true" class="brand-marquee-item"><img alt="" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div aria-hidden="true" class="brand-marquee-item"><img alt="" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div aria-hidden="true" class="brand-marquee-item"><img alt="" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div aria-hidden="true" class="brand-marquee-item"><img alt="" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-            <div aria-hidden="true" class="brand-marquee-item"><img alt="" src="assets/images/common/ab-centrum-logo-soft.svg"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <section class="section about" id="about">
-      <div class="container section-grid section-grid-wide">
-        <div class="section-copy reveal">
+      <div class="container">
+        <div class="section-head about-head reveal">
           <div class="eyebrow">О проекте</div>
-          <h2>Площади для производства, офиса и коммерческих форматов</h2>
-          <p>Объект расположен в Митино по адресу: Москва, ул. Барышиха, вл. 32. Проект реализуется в формате промтехнопарка, который дает резидентам понятную инфраструктуру и удобную рабочую среду для производства, офиса и сервисных функций.</p>
-          <p>В составе комплекса предусмотрены производственные зоны, офисные этажи, мезонины и общественные пространства. Пространство можно адаптировать под разные задачи: light industrial, сборку, showroom, back office или смешанный формат.</p>
-          <p>Проект развивает компания «АБ Центрум», которая более десяти лет работает как девелопер и генеральный подрядчик коммерческих и промышленных объектов в Москве и Подмосковье. Опираясь на собственный опыт, компания создала формат для арендаторов, которым важны приватность, комфорт и качественная среда без большого количества соседей.</p>
-          <p>Промтехнопарк на Барышихе задуман как бутик light industrial класса А+ общей площадью 12 000 кв. м и рассчитан всего на четырех резидентов. Для них предусмотрена расширенная инфраструктура: коворкинг, шоурум, кафе, фитнес-зона с кортом для падела, зеленая веранда на крыше и зарядные станции для электромобилей.</p>
-          <p>Проект сочетает современную индустриальную функцию с комфортом бизнес-пространства и подходит компаниям, которым нужен продуманный контур для роста и ежедневной работы.</p>
+          <h2>Площади для производства,<br>офиса и коммерческих форматов</h2>
+        </div>
+
+        <div class="section-grid section-grid-wide">
+        <div class="section-copy reveal">
+          <p class="about-lead">Объект расположен в Митино по адресу: Москва, ул. Барышиха, вл. 32. Это бутик-промтехнопарк класса A+ для light industrial, офиса, showroom и смешанных бизнес-форматов.</p>
+          <div class="about-text-flow">
+            <p>В составе комплекса предусмотрены производственные зоны, офисные этажи, мезонины и общественные пространства. Пространство можно адаптировать под сборку, сервис, back office, showroom или комбинированный формат работы.</p>
+            <p>Проект развивает компания «АБ Центрум», которая более десяти лет работает как девелопер и генеральный подрядчик коммерческих и промышленных объектов в Москве и Подмосковье.</p>
+            <p>Концепция сочетает современную индустриальную функцию с комфортом бизнес-среды: приватность, продуманную инфраструктуру и понятный контур для ежедневной работы команды.</p>
+          </div>
           <div class="feature-list">
             <div class="feature-chip">6 ворот, из них 3 с доклевеллером</div>
             <div class="feature-chip">2 лифта и 2 грузовых подъемника по 4 т</div>
@@ -195,10 +186,6 @@
               <span>Адрес объекта</span>
               <strong>Москва, ул. Барышиха, вл. 32</strong>
             </article>
-            <article>
-              <span>Контакт для заявок</span>
-              <strong><a href="mailto:s.zharov@abcentrum.ru">s.zharov@abcentrum.ru</a></strong>
-            </article>
           </div>
         </div>
 
@@ -214,14 +201,15 @@
               <span>Производственная часть, мезонины и офисные этажи можно комбинировать между собой.</span>
             </article>
             <article>
-              <strong>Понятная эксплуатация</strong>
-              <span>Расходы по принципу open book, но не более 3 000 руб/м² в год без НДС.</span>
-            </article>
-            <article>
               <strong>Живая инфраструктура</strong>
               <span>Питание, спорт и места общего пользования предусмотрены в концепции комплекса.</span>
             </article>
           </div>
+          <div class="about-support-copy">
+            <p>Промтехнопарк на Барышихе рассчитан на ограниченное число резидентов, поэтому рабочая среда остаётся спокойной, приватной и управляемой.</p>
+            <p>Для арендаторов предусмотрена расширенная инфраструктура: коворкинг, шоурум, кафе, фитнес-зона с кортом для падела, зеленая веранда на крыше и зарядные станции для электромобилей.</p>
+          </div>
+        </div>
         </div>
       </div>
     </section>
@@ -306,19 +294,28 @@
         </div>
 
         <div class="map-card reveal delay-1">
-          <div class="map-media" data-map-annotation>
-            <img alt="Схема расположения объекта" src="assets/images/map-location.jpg">
-            <div class="map-annotation" aria-hidden="true">
-              <div class="map-annotation-label">Место расположения объекта</div>
-              <div class="map-annotation-pin">
-                <span class="map-annotation-pin-core"></span>
-                <span class="map-annotation-pin-ring"></span>
-              </div>
-            </div>
+          <div class="map-media">
+            <div
+              class="map-canvas"
+              id="locationMap"
+              data-map-center-lat="55.848817"
+              data-map-center-lon="37.341266"
+              data-map-point-lat="55.849132"
+              data-map-point-lon="37.340594"
+              data-map-zoom="17"
+              aria-label="Яндекс Карта с отметкой Промтехнопарка на улице Барышиха, 32"></div>
           </div>
           <div class="map-card-caption">
-            <strong>Адрес объекта</strong>
-            <span>г. Москва, ул. Барышиха, вл. 32</span>
+            <div class="map-card-copy">
+              <strong>Адрес объекта</strong>
+              <span>г. Москва, ул. Барышиха, вл. 32</span>
+            </div>
+            <a
+              class="button button-accent map-route-button map-route-button-invert"
+              href="https://yandex.ru/maps/"
+              data-route-button
+              target="_blank"
+              rel="noopener noreferrer">Проложить маршрут</a>
           </div>
         </div>
       </div>
@@ -413,17 +410,126 @@
       </div>
     </section>
 
+    <section class="section news-section" id="news">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="eyebrow">Новости</div>
+          <h2>Новости проекта</h2>
+        </div>
+
+        <div class="news-feature reveal delay-1">
+          <div class="news-feature-media">
+            <img alt="«Цифровой прораб» для бизнеса" loading="lazy" src="assets/images/new.jpg">
+          </div>
+
+          <div class="news-feature-slides">
+            <article class="news-slide is-active" data-news-slide>
+              <div class="news-feature-content">
+                <div class="news-feature-meta">
+                  <span>Новости</span>
+                  <time datetime="2026-03-24">24 Марта 2026</time>
+                </div>
+
+                <div class="news-feature-body">
+                  <h3>«Цифровой прораб» для бизнеса: Сбербанк внедрил ИИ-агента в девелоперской компании AB Centrum</h3>
+                  <p>Московский банк Сбербанка реализовал проект по внедрению корпоративной платформы для создания и управления ИИ-агентами GigaChat Enterprise («ГигаЧат Бизнес») в деятельность девелоперской компании AB Centrum, одного из игроков рынка коммерческой недвижимости Москвы и Московской области. Об этом CNews сообщили представители Сбербанка.</p>
+                </div>
+
+                <div class="news-feature-action">
+                  <a href="https://www.cnews.ru/news/line/2026-03-24_tsifrovoj_prorab_dlya_biznesa" class="link-more-news" target="_blank" rel="noopener noreferrer">
+                    <div>Читать далее</div>
+                    <span aria-hidden="true" class="ico-arr"></span>
+                    <div class="line-w abs-up"></div>
+                    <div class="line-h abs-l"></div>
+                  </a>
+                  <div class="news-action-controls" aria-label="Навигация по новостям">
+                    <div class="case-arrow-l lobby-arrow news-arrow" role="button" tabindex="0" data-news-prev aria-label="Предыдущая новость">
+                      <div class="w-icon-slider-left" aria-hidden="true"></div>
+                    </div>
+                    <div class="case-arrow-r lobby-arrow news-arrow" role="button" tabindex="0" data-news-next aria-label="Следующая новость">
+                      <div class="w-icon-slider-right" aria-hidden="true"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="news-slide" data-news-slide>
+              <div class="news-feature-content">
+                <div class="news-feature-meta">
+                  <span>Новости</span>
+                  <time datetime="2025-05-11">11 Мая 2025</time>
+                </div>
+
+                <div class="news-feature-body">
+                  <h3>В Митине появится новый технопарк в рамках масштабного инвестиционного проекта</h3>
+                  <p>Для строительства промтехнопарка город предоставил земельный участок площадью 0,98 гектара по льготной ставке один рубль в год.</p>
+                </div>
+
+                <div class="news-feature-action">
+                  <a href="https://abcentrum.ru/v-mitine-pojavitsja-novyj-tehnopark-v-ramkah-masshtabnogo-investicionnogo-proekta" class="link-more-news" target="_blank" rel="noopener noreferrer">
+                    <div>Читать далее</div>
+                    <span aria-hidden="true" class="ico-arr"></span>
+                    <div class="line-w abs-up"></div>
+                    <div class="line-h abs-l"></div>
+                  </a>
+                  <div class="news-action-controls" aria-label="Навигация по новостям">
+                    <div class="case-arrow-l lobby-arrow news-arrow" role="button" tabindex="0" data-news-prev aria-label="Предыдущая новость">
+                      <div class="w-icon-slider-left" aria-hidden="true"></div>
+                    </div>
+                    <div class="case-arrow-r lobby-arrow news-arrow" role="button" tabindex="0" data-news-next aria-label="Следующая новость">
+                      <div class="w-icon-slider-right" aria-hidden="true"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article class="news-slide" data-news-slide>
+              <div class="news-feature-content">
+                <div class="news-feature-meta">
+                  <span>Новости</span>
+                </div>
+
+                <div class="news-feature-body">
+                  <h3>«АБ Центрум»: бутик-подход</h3>
+                  <p>АБЦ больше десяти лет работает как девелопер и генеральный подрядчик, реализуя коммерческие и промышленные объекты в Москве и Подмосковье. По собственному девелоперскому опыту «АБ Центрум» знает, что есть арендаторы, которые не хотят делить крышу с большим количеством соседей.</p>
+                </div>
+
+                <div class="news-feature-action">
+                  <a href="https://moskvichka.ru/article/trends/komu-seichas-legko-ili-moskovskij-promyshlennyj-biznes-segodnya?ysclid=mn4g6dil2l109994479" class="link-more-news" target="_blank" rel="noopener noreferrer">
+                    <div>Читать далее</div>
+                    <span aria-hidden="true" class="ico-arr"></span>
+                    <div class="line-w abs-up"></div>
+                    <div class="line-h abs-l"></div>
+                  </a>
+                  <div class="news-action-controls" aria-label="Навигация по новостям">
+                    <div class="case-arrow-l lobby-arrow news-arrow" role="button" tabindex="0" data-news-prev aria-label="Предыдущая новость">
+                      <div class="w-icon-slider-left" aria-hidden="true"></div>
+                    </div>
+                    <div class="case-arrow-r lobby-arrow news-arrow" role="button" tabindex="0" data-news-next aria-label="Следующая новость">
+                      <div class="w-icon-slider-right" aria-hidden="true"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section lobby" id="lobby">
       <div class="container">
         <div class="lobby-head reveal">
           <h2 class="lobby-title">Лобби</h2>
           <div class="lobby-controls" aria-label="Навигация по галерее лобби">
-            <button class="lobby-arrow" type="button" data-lobby-prev aria-label="Предыдущие изображения лобби">
-              <span aria-hidden="true">←</span>
-            </button>
-            <button class="lobby-arrow" type="button" data-lobby-next aria-label="Следующие изображения лобби">
-              <span aria-hidden="true">→</span>
-            </button>
+            <div class="case-arrow-l lobby-arrow" role="button" tabindex="0" data-lobby-prev aria-label="Предыдущие изображения лобби">
+              <div class="w-icon-slider-left" aria-hidden="true"></div>
+            </div>
+            <div class="case-arrow-r lobby-arrow" role="button" tabindex="0" data-lobby-next aria-label="Следующие изображения лобби">
+              <div class="w-icon-slider-right" aria-hidden="true"></div>
+            </div>
           </div>
         </div>
 
@@ -468,8 +574,8 @@
               <span class="slider-badge">Лот 01</span>
               <div class="slider-dots"><span class="slider-dot active" data-dot="0"></span><span class="slider-dot" data-dot="1"></span><span class="slider-dot" data-dot="2"></span></div>
               <div class="slider-controls">
-                <button class="slider-arrow" type="button" data-prev aria-label="Предыдущее изображение">←</button>
-                <button class="slider-arrow" type="button" data-next aria-label="Следующее изображение">→</button>
+                <div class="case-arrow-l slider-arrow" role="button" tabindex="0" data-prev aria-label="Предыдущее изображение"><div class="w-icon-slider-left" aria-hidden="true"></div></div>
+                <div class="case-arrow-r slider-arrow" role="button" tabindex="0" data-next aria-label="Следующее изображение"><div class="w-icon-slider-right" aria-hidden="true"></div></div>
               </div>
             </div>
             <div class="lot-content">
@@ -489,8 +595,7 @@
               </div>
               <div class="lot-bottom">
                 <div class="lot-actions">
-                  <button class="button button-secondary" type="button" data-request-layout="Лот 01 · Офис 896,94 м²">Получить планировку</button>
-                  <button class="button button-accent" type="button" data-request-lot="Лот 01 · Офис 896,94 м²">Запросить этот лот</button>
+                  <button class="button button-accent tab-link-button" data-tab-link type="button" data-request-lot="Лот 01 · Офис 896,94 м²"><span class="tab-link-arrow" aria-hidden="true"></span><span class="tab-link-label">Запросить этот лот</span></button>
                 </div>
               </div>
             </div>
@@ -504,8 +609,8 @@
               <span class="slider-badge">Лот 02</span>
               <div class="slider-dots"><span class="slider-dot active" data-dot="0"></span><span class="slider-dot" data-dot="1"></span><span class="slider-dot" data-dot="2"></span></div>
               <div class="slider-controls">
-                <button class="slider-arrow" type="button" data-prev aria-label="Предыдущее изображение">←</button>
-                <button class="slider-arrow" type="button" data-next aria-label="Следующее изображение">→</button>
+                <div class="case-arrow-l slider-arrow" role="button" tabindex="0" data-prev aria-label="Предыдущее изображение"><div class="w-icon-slider-left" aria-hidden="true"></div></div>
+                <div class="case-arrow-r slider-arrow" role="button" tabindex="0" data-next aria-label="Следующее изображение"><div class="w-icon-slider-right" aria-hidden="true"></div></div>
               </div>
             </div>
             <div class="lot-content">
@@ -525,8 +630,7 @@
               </div>
               <div class="lot-bottom">
                 <div class="lot-actions">
-                  <button class="button button-secondary" type="button" data-request-layout="Лот 02 · Офис 429,79 м²">Получить планировку</button>
-                  <button class="button button-accent" type="button" data-request-lot="Лот 02 · Офис 429,79 м²">Запросить этот лот</button>
+                  <button class="button button-accent tab-link-button" data-tab-link type="button" data-request-lot="Лот 02 · Офис 429,79 м²"><span class="tab-link-arrow" aria-hidden="true"></span><span class="tab-link-label">Запросить этот лот</span></button>
                 </div>
               </div>
             </div>
@@ -540,8 +644,8 @@
               <span class="slider-badge">Лот 03</span>
               <div class="slider-dots"><span class="slider-dot active" data-dot="0"></span><span class="slider-dot" data-dot="1"></span><span class="slider-dot" data-dot="2"></span></div>
               <div class="slider-controls">
-                <button class="slider-arrow" type="button" data-prev aria-label="Предыдущее изображение">←</button>
-                <button class="slider-arrow" type="button" data-next aria-label="Следующее изображение">→</button>
+                <div class="case-arrow-l slider-arrow" role="button" tabindex="0" data-prev aria-label="Предыдущее изображение"><div class="w-icon-slider-left" aria-hidden="true"></div></div>
+                <div class="case-arrow-r slider-arrow" role="button" tabindex="0" data-next aria-label="Следующее изображение"><div class="w-icon-slider-right" aria-hidden="true"></div></div>
               </div>
             </div>
             <div class="lot-content">
@@ -561,8 +665,7 @@
               </div>
               <div class="lot-bottom">
                 <div class="lot-actions">
-                  <button class="button button-secondary" type="button" data-request-layout="Лот 03 · Магазин / шоурум 425,30 м²">Получить планировку</button>
-                  <button class="button button-accent" type="button" data-request-lot="Лот 03 · Магазин / шоурум 425,30 м²">Запросить этот лот</button>
+                  <button class="button button-accent tab-link-button" data-tab-link type="button" data-request-lot="Лот 03 · Магазин / шоурум 425,30 м²"><span class="tab-link-arrow" aria-hidden="true"></span><span class="tab-link-label">Запросить этот лот</span></button>
                 </div>
               </div>
             </div>
@@ -576,8 +679,8 @@
               <span class="slider-badge">Лот 04</span>
               <div class="slider-dots"><span class="slider-dot active" data-dot="0"></span><span class="slider-dot" data-dot="1"></span><span class="slider-dot" data-dot="2"></span></div>
               <div class="slider-controls">
-                <button class="slider-arrow" type="button" data-prev aria-label="Предыдущее изображение">←</button>
-                <button class="slider-arrow" type="button" data-next aria-label="Следующее изображение">→</button>
+                <div class="case-arrow-l slider-arrow" role="button" tabindex="0" data-prev aria-label="Предыдущее изображение"><div class="w-icon-slider-left" aria-hidden="true"></div></div>
+                <div class="case-arrow-r slider-arrow" role="button" tabindex="0" data-next aria-label="Следующее изображение"><div class="w-icon-slider-right" aria-hidden="true"></div></div>
               </div>
             </div>
             <div class="lot-content">
@@ -597,8 +700,7 @@
               </div>
               <div class="lot-bottom">
                 <div class="lot-actions">
-                  <button class="button button-secondary" type="button" data-request-layout="Лот 04 · Кафе / ресторан 385,12 м²">Получить планировку</button>
-                  <button class="button button-accent" type="button" data-request-lot="Лот 04 · Кафе / ресторан 385,12 м²">Запросить этот лот</button>
+                  <button class="button button-accent tab-link-button" data-tab-link type="button" data-request-lot="Лот 04 · Кафе / ресторан 385,12 м²"><span class="tab-link-arrow" aria-hidden="true"></span><span class="tab-link-label">Запросить этот лот</span></button>
                 </div>
               </div>
             </div>
@@ -612,8 +714,8 @@
               <span class="slider-badge">Лот 05</span>
               <div class="slider-dots"><span class="slider-dot active" data-dot="0"></span><span class="slider-dot" data-dot="1"></span><span class="slider-dot" data-dot="2"></span></div>
               <div class="slider-controls">
-                <button class="slider-arrow" type="button" data-prev aria-label="Предыдущее изображение">←</button>
-                <button class="slider-arrow" type="button" data-next aria-label="Следующее изображение">→</button>
+                <div class="case-arrow-l slider-arrow" role="button" tabindex="0" data-prev aria-label="Предыдущее изображение"><div class="w-icon-slider-left" aria-hidden="true"></div></div>
+                <div class="case-arrow-r slider-arrow" role="button" tabindex="0" data-next aria-label="Следующее изображение"><div class="w-icon-slider-right" aria-hidden="true"></div></div>
               </div>
             </div>
             <div class="lot-content">
@@ -633,8 +735,7 @@
               </div>
               <div class="lot-bottom">
                 <div class="lot-actions">
-                  <button class="button button-secondary" type="button" data-request-layout="Лот 05 · Производство + офис 5 107,23 м²">Получить планировку</button>
-                  <button class="button button-accent" type="button" data-request-lot="Лот 05 · Производство + офис 5 107,23 м²">Запросить этот лот</button>
+                  <button class="button button-accent tab-link-button" data-tab-link type="button" data-request-lot="Лот 05 · Производство + офис 5 107,23 м²"><span class="tab-link-arrow" aria-hidden="true"></span><span class="tab-link-label">Запросить этот лот</span></button>
                 </div>
               </div>
             </div>
@@ -648,8 +749,8 @@
               <span class="slider-badge">Лот 06</span>
               <div class="slider-dots"><span class="slider-dot active" data-dot="0"></span><span class="slider-dot" data-dot="1"></span><span class="slider-dot" data-dot="2"></span></div>
               <div class="slider-controls">
-                <button class="slider-arrow" type="button" data-prev aria-label="Предыдущее изображение">←</button>
-                <button class="slider-arrow" type="button" data-next aria-label="Следующее изображение">→</button>
+                <div class="case-arrow-l slider-arrow" role="button" tabindex="0" data-prev aria-label="Предыдущее изображение"><div class="w-icon-slider-left" aria-hidden="true"></div></div>
+                <div class="case-arrow-r slider-arrow" role="button" tabindex="0" data-next aria-label="Следующее изображение"><div class="w-icon-slider-right" aria-hidden="true"></div></div>
               </div>
             </div>
             <div class="lot-content">
@@ -669,8 +770,7 @@
               </div>
               <div class="lot-bottom">
                 <div class="lot-actions">
-                  <button class="button button-secondary" type="button" data-request-layout="Лот 06 · Производственный блок 3 067,05 м²">Получить планировку</button>
-                  <button class="button button-accent" type="button" data-request-lot="Лот 06 · Производственный блок 3 067,05 м²">Запросить этот лот</button>
+                  <button class="button button-accent tab-link-button" data-tab-link type="button" data-request-lot="Лот 06 · Производственный блок 3 067,05 м²"><span class="tab-link-arrow" aria-hidden="true"></span><span class="tab-link-label">Запросить этот лот</span></button>
                 </div>
               </div>
             </div>
@@ -688,7 +788,6 @@
           <h2>Коммерческие условия</h2>
           <p class="terms-intro">Базовые условия собраны в одном блоке. Помещения передаются в состоянии Shell &amp; Core.</p>
           <div class="term-list">
-            <article class="term-card term-card-accent"><strong>Ставка аренды</strong><span>от 18 000 руб/м² в год для производства, от 28 000 руб/м² в год для офисов, 29 000 руб/м² в год для коммерческих блоков 1 этажа</span></article>
             <article><strong>Срок аренды</strong><span>долгосрочный договор</span></article>
             <article><strong>Состояние помещений</strong><span>передаются в состоянии Shell &amp; Core</span></article>
             <article><strong>НДС</strong><span>22% сверх указанной ставки</span></article>
@@ -714,16 +813,12 @@
       <div class="container section-grid section-grid-wide">
         <div class="contacts-copy reveal">
           <div class="eyebrow">Контакты</div>
-          <h2>Оставьте заявку на подбор помещения</h2>
           <p>Заполните короткую форму, и мы предложим подходящий лот, обсудим ставку, сроки и возможный формат размещения.</p>
           <div class="contact-cards">
             <a class="contact-card" href="tel:+79585004830"><span>Телефон</span><strong>+7 (958) 500-48-30</strong></a>
             <a class="contact-card" href="mailto:s.zharov@abcentrum.ru"><span>Почта для заявок</span><strong>s.zharov@abcentrum.ru</strong></a>
             <div class="contact-card"><span>Адрес объекта</span><strong>Москва, ул. Барышиха, вл. 32</strong></div>
             <div class="contact-card"><span>Кто ведет проект</span><strong>АБ Центрум · ООО «ПРОМЦЕНТРПЛАСТ»</strong></div>
-          </div>
-          <div class="contacts-legal">
-            <p><strong>Политика конфиденциальности:</strong> данные из формы используются только для обработки заявки и обратной связи.</p>
           </div>
         </div>
 
@@ -734,7 +829,6 @@
           </div>
 
           <div class="selected-lot selected-lot--empty" id="selectedLotBox">
-            <span>Лот не выбран. Оставьте заявку, и мы подберем подходящий вариант.</span>
             <button class="inline-action" hidden id="changeLotButton" type="button">Выбрать другой лот</button>
           </div>
 
@@ -746,10 +840,6 @@
             <label>
               <span>Телефон</span>
               <input autocomplete="tel" id="leadPhone" inputmode="tel" minlength="10" name="phone" pattern="^[0-9+()\\-\\s]{10,}$" placeholder="+7 (___) ___-__-__" required type="tel">
-            </label>
-            <label>
-              <span>E-mail</span>
-              <input autocomplete="email" id="leadEmail" name="email" placeholder="example@company.ru" type="email">
             </label>
             <label class="full-width lot-select-wrap" id="lotSelectWrap">
               <span>Выбрать конкретный лот</span>
@@ -775,9 +865,9 @@
             </label>
           </div>
 
-          <label class="consent-row">
-            <input id="leadConsent" name="consent" required type="checkbox">
-            <span>Согласен на обработку персональных данных и обратную связь по заявке. Подробности описаны в <a href="privacy.html" target="_blank" rel="noopener noreferrer">политике конфиденциальности</a>.</span>
+          <label class="consent-row" for="leadConsent">
+            <input id="leadConsent" name="consent" required type="checkbox" value="agree">
+            <span>Я соглашаюсь на обработку персональных данных и принимаю условия <a href="privacy.html" target="_blank" rel="noopener noreferrer">политики конфиденциальности</a>.</span>
           </label>
 
           <input autocomplete="off" class="hidden-field" name="website" tabindex="-1" type="text">
@@ -787,38 +877,55 @@
           <input name="_captcha" type="hidden" value="false">
 
           <div class="form-actions">
-            <button class="button button-accent" data-cta="form-submit" type="submit">Отправить заявку</button>
+            <button class="button button-accent tab-link-button" data-cta="form-submit" data-tab-link type="submit">
+              <span class="tab-link-arrow" aria-hidden="true"></span>
+              <span class="tab-link-label">Отправить заявку</span>
+            </button>
           </div>
 
           <div aria-live="polite" class="form-status" id="formStatus"></div>
         </form>
       </div>
     </section>
+
   </main>
 
   <footer class="site-footer">
+    <div class="footer-marquee-band" aria-hidden="true">
+      <div class="container footer-marquee-band-inner">
+        <div class="footer-marquee-track-shell">
+          <div class="footer-marquee-track">
+            <img alt="" class="footer-marquee-logo" src="assets/images/common/logo.svg">
+            <img alt="" class="footer-marquee-logo" src="assets/images/common/logo.svg">
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="container footer-inner">
-      <div class="footer-brand-block">
-        <img alt="AB Centrum" class="footer-ab-logo" src="assets/images/common/ab-centrum-logo-light.svg">
-        <div class="footer-brand-copy">
-          <strong>ПРОМТЕХНОПАРК</strong>
+      <div class="footer-panel footer-panel-contacts">
+        <div class="footer-primary-links">
+          <a class="footer-phone-link" href="tel:+79585004830">+7 (958) 500-48-30</a>
+          <a class="footer-mail-link" href="mailto:s.zharov@abcentrum.ru">s.zharov@abcentrum.ru</a>
+        </div>
+        <div class="footer-address-block">
           <span>Москва, ул. Барышиха, вл. 32</span>
         </div>
       </div>
-      <div class="footer-links">
-        <a href="tel:+79585004830">+7 (958) 500-48-30</a>
-        <a href="mailto:s.zharov@abcentrum.ru">s.zharov@abcentrum.ru</a>
-        <a href="privacy.html">Политика конфиденциальности</a>
-      </div>
-      <div class="footer-company">
-        <span>Девелопер проекта: АБ Центрум</span>
-        <span>ООО «ПРОМЦЕНТРПЛАСТ»</span>
-        <span>ИНН 7733394430</span>
-        <span>ОГРН 1227700680910</span>
+
+      <div class="footer-panel footer-panel-meta">
+        <p class="footer-note">Информация на сайте носит ознакомительный характер. Финальные условия аренды, состав помещений и технические параметры согласовываются индивидуально по выбранному лоту.</p>
+        <div class="footer-company">
+          <span>Девелопер проекта: АБ Центрум</span>
+          <span>ООО «ПРОМЦЕНТРПЛАСТ» · ИНН 7733394430 · ОГРН 1227700680910</span>
+        </div>
+        <div class="footer-meta-row">
+          <span class="footer-copyright">©ABCENTRUM 2023</span>
+        </div>
       </div>
     </div>
   </footer>
 
-  <script src="assets/js/main.js?v=20260326-3"></script>
+  <script src="assets/js/main.js?v=20260329-3"></script>
 </body>
 </html>
