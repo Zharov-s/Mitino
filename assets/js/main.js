@@ -845,17 +845,13 @@ document.addEventListener('DOMContentLoaded', () => {
       phoneField.setCustomValidity(normalizedPhone.length >= 10 ? '' : 'Укажите корректный номер телефона.');
     }
 
-    if (consentField instanceof HTMLInputElement) {
-      consentField.setCustomValidity(consentField.checked ? '' : 'Нужно согласие на обработку персональных данных.');
-    }
-
     const isValid = leadForm instanceof HTMLFormElement
       ? (report ? leadForm.reportValidity() : leadForm.checkValidity())
       : false;
     return isValid;
   };
 
-  [nameField, phoneField, consentField].forEach((field) => {
+  [nameField, phoneField].forEach((field) => {
     field?.addEventListener('input', () => validateLeadForm());
     field?.addEventListener('change', () => validateLeadForm());
   });
@@ -865,7 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!(leadForm instanceof HTMLFormElement)) return;
 
     if (!validateLeadForm({ report: true })) {
-      setFormStatus('Проверьте обязательные поля формы и согласие на обработку данных.', 'error');
+      setFormStatus('Проверьте обязательные поля формы.', 'error');
       return;
     }
 
