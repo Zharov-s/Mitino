@@ -614,6 +614,149 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('blur', deactivate);
   });
 
+  // Rubytech session modal
+  const rubytechSessionKey = 'rubytech-modal-dismissed-v2';
+  const rubytechModal = document.getElementById('rubytechModal');
+  const rubytechModalClose = document.getElementById('rubytechModalClose');
+  const rubytechCta = rubytechModal?.querySelector('[data-rubytech-cta]');
+  let rubytechAudioContext = null;
+  let rubytechAudioBusy = false;
+  let rubytechAudioUnlocked = false;
+
+  const createRubytechAudioContext = () => {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContextClass) return null;
+
+    if (!rubytechAudioContext) {
+      rubytechAudioContext = new AudioContextClass();
+    }
+
+    return rubytechAudioContext;
+  };
+
+  const unlockRubytechAudio = async () => {
+    const audioContext = createRubytechAudioContext();
+    if (!audioContext) return false;
+
+    if (audioContext.state === 'suspended') {
+      try {
+        await audioContext.resume();
+      } catch (error) {
+        return false;
+      }
+    }
+
+    rubytechAudioUnlocked = audioContext.state === 'running';
+    return rubytechAudioUnlocked;
+  };
+
+  const playRubytechSound = async () => {
+    if (rubytechAudioBusy) return false;
+
+    try {
+      const audioContext = createRubytechAudioContext();
+      if (!audioContext) {
+        return false;
+      }
+
+      const isUnlocked = await unlockRubytechAudio();
+      if (!isUnlocked) {
+        return false;
+      }
+
+      rubytechAudioBusy = true;
+
+      const startAt = audioContext.currentTime + 0.02;
+      const gainNode = audioContext.createGain();
+      gainNode.gain.setValueAtTime(0.0001, startAt);
+      gainNode.gain.exponentialRampToValueAtTime(0.045, startAt + 0.05);
+      gainNode.gain.exponentialRampToValueAtTime(0.0001, startAt + 0.34);
+      gainNode.connect(audioContext.destination);
+
+      const frequencies = [523.25, 659.25];
+      frequencies.forEach((frequency, index) => {
+        const oscillator = audioContext.createOscillator();
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(frequency, startAt);
+        oscillator.connect(gainNode);
+        oscillator.start(startAt + index * 0.028);
+        oscillator.stop(startAt + 0.16 + index * 0.05);
+      });
+
+      window.setTimeout(() => {
+        rubytechAudioBusy = false;
+      }, 380);
+      return true;
+    } catch (error) {
+      rubytechAudioBusy = false;
+      return false;
+    }
+  };
+
+  const setRubytechSessionDismissed = () => {
+    try {
+      window.sessionStorage.setItem(rubytechSessionKey, 'true');
+    } catch (error) {
+      // Ignore storage access issues in private mode or restricted contexts.
+    }
+  };
+
+  const isRubytechDismissed = () => {
+    try {
+      return window.sessionStorage.getItem(rubytechSessionKey) === 'true';
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const closeRubytechModal = () => {
+    if (!rubytechModal || rubytechModal.hidden) return;
+    rubytechModal.classList.remove('is-active');
+    window.setTimeout(() => {
+      if (rubytechModal) rubytechModal.hidden = true;
+    }, 220);
+    setRubytechSessionDismissed();
+  };
+
+  const openRubytechModal = () => {
+    if (!rubytechModal || isRubytechDismissed()) return;
+    rubytechModal.hidden = false;
+    requestAnimationFrame(() => {
+      rubytechModal?.classList.add('is-active');
+    });
+
+    window.setTimeout(() => {
+      playRubytechSound();
+    }, 140);
+  };
+
+  rubytechModalClose?.addEventListener('click', () => closeRubytechModal());
+  rubytechCta?.addEventListener('click', () => closeRubytechModal());
+
+  const handleRubytechAudioGesture = async () => {
+    if (rubytechModal && !rubytechModal.hidden) return;
+    const unlocked = await unlockRubytechAudio();
+    if (!unlocked) return;
+    window.removeEventListener('keydown', handleRubytechAudioGesture);
+    window.removeEventListener('pointerdown', handleRubytechAudioGesture);
+    window.removeEventListener('touchstart', handleRubytechAudioGesture);
+  };
+
+  ['pointerdown', 'touchstart'].forEach((eventName) => {
+    window.addEventListener(eventName, handleRubytechAudioGesture, { passive: true });
+  });
+  window.addEventListener('keydown', handleRubytechAudioGesture);
+
+  document.addEventListener('keydown', (event) => {
+    if (!rubytechModal || rubytechModal.hidden) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeRubytechModal();
+    }
+  });
+
+  window.setTimeout(openRubytechModal, 3000);
+
   // "Leave request" buttons for lots
   const lotRequestButtons = [...document.querySelectorAll('[data-request-lot]')];
   const lotLayoutButtons = [...document.querySelectorAll('[data-request-layout]')];

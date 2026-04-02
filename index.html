@@ -53,7 +53,7 @@
       gaMeasurementId: ''
     };
   </script>
-  <link href="assets/css/style.css?v=20260329-3" rel="stylesheet">
+  <link href="assets/css/style.css?v=20260402-1" rel="stylesheet">
   <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" defer></script>
 </head>
 <body>
@@ -891,6 +891,28 @@
 
   </main>
 
+  <div class="rubytech-modal" id="rubytechModal" hidden>
+    <section class="rubytech-modal-dialog" role="dialog" aria-label="Баннер Rubytech" aria-labelledby="rubytechModalTitle" aria-describedby="rubytechModalDescription">
+      <button class="rubytech-modal-close" id="rubytechModalClose" type="button" aria-label="Закрыть баннер">
+        <span aria-hidden="true">×</span>
+      </button>
+      <div class="rubytech-modal-brand">
+        <img src="assets/images/rubytech_logo.png" alt="Rubytech" class="rubytech-modal-logo" loading="eager">
+      </div>
+      <div class="rubytech-modal-copy">
+        <div class="rubytech-modal-eyebrow">Ключевой арендатор</div>
+        <h2 class="rubytech-modal-title" id="rubytechModalTitle">Rubytech выбрала Промтехнопарк на ул. Барышиха, вл. 32 для расширения производства ПАК, арендовав 4 200 м².</h2>
+        <p class="rubytech-modal-description" id="rubytechModalDescription">Крупный технологический арендатор уже выбрал объект для расширения производства.</p>
+      </div>
+      <div class="rubytech-modal-actions">
+        <a class="button button-accent tab-link-button rubytech-modal-primary" href="#lots" data-tab-link data-rubytech-cta>
+          <span class="tab-link-arrow" aria-hidden="true"></span>
+          <span class="tab-link-label">Смотреть доступные площади</span>
+        </a>
+      </div>
+    </section>
+  </div>
+
   <footer class="site-footer">
     <div class="footer-marquee-band" aria-hidden="true">
       <div class="container footer-marquee-band-inner">
@@ -927,6 +949,6 @@
     </div>
   </footer>
 
-  <script src="assets/js/main.js?v=20260329-3"></script>
+  <script src="assets/js/main.js?v=20260402-1"></script>
 </body>
 </html>
