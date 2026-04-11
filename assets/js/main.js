@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const placemark = new window.ymaps.Placemark([pointLat, pointLon], {
         balloonContentHeader: 'Промтехнопарк',
-        balloonContentBody: 'Москва, ул. Барышиха, вл. 32',
+        balloonContentBody: 'Москва, Барышиха 37а',
         hintContent: 'Промтехнопарк',
         iconCaption: 'Промтехнопарк'
       }, {
