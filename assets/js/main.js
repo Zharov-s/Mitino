@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const isCookieBannerVisible = () => {
     const banner = document.querySelector('[data-cookie-banner]');
-    return Boolean(banner && !banner.hidden && !banner.classList.contains('is-hidden'));
+    return Boolean(banner && banner.classList.contains('is-visible') && !banner.classList.contains('is-hidden'));
   };
 
   const setupCookieBanner = () => {
@@ -79,12 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     banner.hidden = false;
+    banner.classList.add('is-visible');
 
     const acceptButton = banner.querySelector('[data-cookie-accept]');
     const fallbackAcceptButton = banner.querySelector('.cookie-banner__button');
     (acceptButton || fallbackAcceptButton)?.addEventListener('click', () => {
       saveCookieConsent();
       banner.classList.add('is-hidden');
+      banner.classList.remove('is-visible');
       window.dispatchEvent(new CustomEvent('cookieConsentAccepted'));
       window.setTimeout(() => banner.remove(), 260);
     });

@@ -3746,6 +3746,10 @@ textarea:focus{
   transition:opacity .25s var(--ease), transform .25s var(--ease);
 }
 
+.cookie-banner[data-cookie-banner]:not(.is-visible){
+  display:none !important;
+}
+
 .cookie-banner.is-hidden{
   opacity:0;
   transform:translateY(12px);
