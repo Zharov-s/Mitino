@@ -9,7 +9,20 @@
   <link href="https://promtechnopark-mitino.ru/privacy" rel="canonical">
   <link href="../assets/images/common/logo.svg" rel="icon" type="image/svg+xml">
   <meta content="#FFFFFF" name="theme-color">
-  <link href="../assets/css/style.css?v=20260403-7" rel="stylesheet">
+  <script>
+    (function () {
+      try {
+        document.documentElement.classList.add(
+          window.localStorage.getItem('cookieConsent') === 'accepted'
+            ? 'has-cookie-consent'
+            : 'needs-cookie-consent'
+        );
+      } catch (error) {
+        document.documentElement.classList.add('needs-cookie-consent');
+      }
+    })();
+  </script>
+  <link href="../assets/css/style.css?v=20260403-8" rel="stylesheet">
 </head>
 <body>
   <main>
@@ -88,13 +101,13 @@
     </section>
   </main>
 
-  <div class="cookie-banner" data-cookie-banner role="dialog" aria-live="polite" aria-label="Уведомление о cookie" hidden>
+  <div class="cookie-banner" data-cookie-banner role="dialog" aria-live="polite" aria-label="Уведомление о cookie">
     <div class="cookie-banner__text">
       Мы используем cookie, Яндекс.Карты и другие технические данные для корректной работы сайта. Продолжая пользоваться сайтом, вы соглашаетесь с обработкой данных в соответствии с <a href="/privacy">Политикой обработки персональных данных</a>.
     </div>
     <button class="button button-accent cookie-banner__button" data-cookie-accept type="button">Принять</button>
   </div>
 
-  <script src="../assets/js/main.js?v=20260403-6"></script>
+  <script src="../assets/js/main.js?v=20260403-7"></script>
 </body>
 </html>

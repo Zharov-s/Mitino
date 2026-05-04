@@ -49,6 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const syncCookieConsentClass = () => {
+    const accepted = hasAcceptedCookieConsent();
+    document.documentElement.classList.toggle('has-cookie-consent', accepted);
+    document.documentElement.classList.toggle('needs-cookie-consent', !accepted);
+  };
+
   const isCookieBannerVisible = () => {
     const banner = document.querySelector('[data-cookie-banner]');
     return Boolean(banner && banner.classList.contains('is-visible') && !banner.classList.contains('is-hidden'));
@@ -79,12 +85,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     banner.hidden = false;
+    syncCookieConsentClass();
     banner.classList.add('is-visible');
 
     const acceptButton = banner.querySelector('[data-cookie-accept]');
     const fallbackAcceptButton = banner.querySelector('.cookie-banner__button');
     (acceptButton || fallbackAcceptButton)?.addEventListener('click', () => {
       saveCookieConsent();
+      syncCookieConsentClass();
       banner.classList.add('is-hidden');
       banner.classList.remove('is-visible');
       window.dispatchEvent(new CustomEvent('cookieConsentAccepted'));

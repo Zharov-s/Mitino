@@ -3732,7 +3732,7 @@ textarea:focus{
   right:max(16px, calc((100vw - var(--container)) / 2));
   bottom:18px;
   z-index:160;
-  display:flex;
+  display:none;
   align-items:center;
   justify-content:space-between;
   gap:20px;
@@ -3746,7 +3746,12 @@ textarea:focus{
   transition:opacity .25s var(--ease), transform .25s var(--ease);
 }
 
-.cookie-banner[data-cookie-banner]:not(.is-visible){
+html.needs-cookie-consent .cookie-banner[data-cookie-banner],
+.cookie-banner[data-cookie-banner].is-visible{
+  display:flex;
+}
+
+html.has-cookie-consent .cookie-banner[data-cookie-banner]{
   display:none !important;
 }
 
@@ -4224,9 +4229,13 @@ textarea:focus{
     left:12px;
     right:12px;
     bottom:12px;
-    display:grid;
     gap:14px;
     padding:16px;
+  }
+
+  html.needs-cookie-consent .cookie-banner[data-cookie-banner],
+  .cookie-banner[data-cookie-banner].is-visible{
+    display:grid;
   }
 
   .cookie-banner__button{
