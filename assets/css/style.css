@@ -3731,7 +3731,7 @@ textarea:focus{
   left:max(16px, calc((100vw - var(--container)) / 2));
   right:max(16px, calc((100vw - var(--container)) / 2));
   bottom:18px;
-  z-index:90;
+  z-index:160;
   display:flex;
   align-items:center;
   justify-content:space-between;

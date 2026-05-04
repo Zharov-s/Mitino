@@ -49,6 +49,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const isCookieBannerVisible = () => {
+    const banner = document.querySelector('[data-cookie-banner]');
+    return Boolean(banner && !banner.hidden && !banner.classList.contains('is-hidden'));
+  };
+
   const setupCookieBanner = () => {
     let banner = document.querySelector('[data-cookie-banner]');
 
@@ -1221,7 +1226,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  window.setTimeout(openRubytechModal, 3000);
+  const scheduleRubytechModal = (delayMs = 3000) => {
+    window.setTimeout(() => {
+      if (isCookieBannerVisible()) {
+        window.addEventListener('cookieConsentAccepted', () => scheduleRubytechModal(700), { once: true });
+        return;
+      }
+
+      openRubytechModal();
+    }, delayMs);
+  };
+
+  scheduleRubytechModal();
 
   // "Leave request" buttons for lots
   const lotRequestButtons = [...document.querySelectorAll('[data-request-lot]')];
