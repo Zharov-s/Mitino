@@ -1275,6 +1275,19 @@ select:focus-visible{
   text-underline-offset:3px;
 }
 
+.section p a.button-accent,
+.policy-copy a.button-accent{
+  color:var(--text-inverse);
+  text-decoration:none;
+}
+
+.section p a.button-accent:hover,
+.section p a.button-accent:focus-visible,
+.policy-copy a.button-accent:hover,
+.policy-copy a.button-accent:focus-visible{
+  color:var(--text-inverse);
+}
+
 .section-copy,
 .location-card,
 .terms-panel,
