@@ -53,8 +53,7 @@
       gaMeasurementId: ''
     };
   </script>
-  <link href="assets/css/style.css?v=20260403-1" rel="stylesheet">
-  <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" defer></script>
+  <link href="assets/css/style.css?v=20260403-3" rel="stylesheet">
 </head>
 <body>
   <div aria-hidden="true" class="page-noise"></div>
@@ -300,6 +299,7 @@
         </div>
 
         <div class="map-card reveal delay-1">
+          <p class="map-privacy-notice">Для отображения карты используются сервисы Яндекс.Карт, которые могут обрабатывать технические данные пользователя. Подробнее — в <a href="/privacy">Политике обработки персональных данных</a>.</p>
           <div class="map-media">
             <div
               class="map-canvas"
@@ -309,7 +309,9 @@
               data-map-point-lat="55.849132"
               data-map-point-lon="37.340594"
               data-map-zoom="17"
-              aria-label="Яндекс Карта с отметкой Промтехнопарка по адресу Барышиха 37а"></div>
+              aria-label="Яндекс Карта с отметкой Промтехнопарка по адресу Барышиха 37а">
+              <span class="map-placeholder">Карта загрузится после принятия cookie.</span>
+            </div>
           </div>
           <div class="map-card-caption">
             <div class="map-card-copy">
@@ -728,6 +730,11 @@
           <input name="_template" type="hidden" value="table">
           <input name="_captcha" type="hidden" value="false">
 
+          <label class="consent-row">
+            <input id="leadConsent" name="personal_data_consent" required type="checkbox" value="accepted">
+            <span>Я согласен на обработку персональных данных в соответствии с <a href="/privacy" target="_blank" rel="noopener noreferrer">Политикой обработки персональных данных</a>.</span>
+          </label>
+
           <div class="form-actions">
             <button class="button button-accent tab-link-button" data-cta="form-submit" data-tab-link type="submit">
               <span class="tab-link-arrow" aria-hidden="true"></span>
@@ -790,15 +797,24 @@
       <div class="footer-panel footer-panel-meta">
         <p class="footer-note">Информация на сайте носит ознакомительный характер. Финальные условия аренды, состав помещений и технические параметры согласовываются индивидуально по выбранному лоту.</p>
         <div class="footer-company">
-          <span>Девелопер проекта: АБ Центрум</span>
-          <span>ООО «ПРОМЦЕНТРПЛАСТ» · ИНН 7733394430 · ОГРН 1227700680910</span>
+          <span>ООО «АБ ЦЕНТРУМ» / ООО «АБ Ц»</span>
+          <span>ОГРН 1177746448406, ИНН 7743207456, КПП 773301001</span>
+          <span>Адрес: г. Москва, вн.тер. г. Муниципальный округ Митино, ул. Митинская, д. 16, помещ. 89</span>
         </div>
         <div class="footer-meta-row">
           <span class="footer-copyright">©ABCENTRUM 2023</span>
+          <a class="footer-policy-link" href="/privacy">Политика обработки персональных данных</a>
         </div>
       </div>
     </div>
   </footer>
+
+  <div class="cookie-banner" data-cookie-banner role="dialog" aria-live="polite" aria-label="Уведомление о cookie">
+    <div class="cookie-banner__text">
+      Мы используем cookie, Яндекс.Карты и другие технические данные для корректной работы сайта. Продолжая пользоваться сайтом, вы соглашаетесь с обработкой данных в соответствии с <a href="/privacy">Политикой обработки персональных данных</a>.
+    </div>
+    <button class="button button-accent cookie-banner__button" data-cookie-accept type="button">Принять</button>
+  </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -1151,6 +1167,6 @@
       syncLotsCarouselState();
     });
   </script>
-  <script src="assets/js/main.js?v=20260403-1"></script>
+  <script src="assets/js/main.js?v=20260403-3"></script>
 </body>
 </html>

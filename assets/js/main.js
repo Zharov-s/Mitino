@@ -26,6 +26,65 @@ document.addEventListener('DOMContentLoaded', () => {
   updateScrollUi();
   window.addEventListener('scroll', updateScrollUi, { passive: true });
 
+  const cookieConsentKey = 'cookieConsent';
+  let cookieConsentAcceptedInSession = false;
+
+  const hasAcceptedCookieConsent = () => {
+    if (cookieConsentAcceptedInSession) return true;
+
+    try {
+      return window.localStorage.getItem(cookieConsentKey) === 'accepted';
+    } catch (error) {
+      return false;
+    }
+  };
+
+  const saveCookieConsent = () => {
+    cookieConsentAcceptedInSession = true;
+
+    try {
+      window.localStorage.setItem(cookieConsentKey, 'accepted');
+    } catch (error) {
+      // The current page can still work if localStorage is unavailable.
+    }
+  };
+
+  const setupCookieBanner = () => {
+    let banner = document.querySelector('[data-cookie-banner]');
+
+    if (hasAcceptedCookieConsent()) {
+      banner?.remove();
+      return;
+    }
+
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.className = 'cookie-banner';
+      banner.dataset.cookieBanner = 'true';
+      banner.setAttribute('role', 'dialog');
+      banner.setAttribute('aria-live', 'polite');
+      banner.setAttribute('aria-label', 'Уведомление о cookie');
+      banner.innerHTML = `
+        <div class="cookie-banner__text">
+          Мы используем cookie, Яндекс.Карты и другие технические данные для корректной работы сайта. Продолжая пользоваться сайтом, вы соглашаетесь с обработкой данных в соответствии с <a href="/privacy">Политикой обработки персональных данных</a>.
+        </div>
+        <button class="button button-accent cookie-banner__button" type="button">Принять</button>
+      `;
+      document.body.appendChild(banner);
+    }
+
+    const acceptButton = banner.querySelector('[data-cookie-accept]');
+    const fallbackAcceptButton = banner.querySelector('.cookie-banner__button');
+    (acceptButton || fallbackAcceptButton)?.addEventListener('click', () => {
+      saveCookieConsent();
+      banner.classList.add('is-hidden');
+      window.dispatchEvent(new CustomEvent('cookieConsentAccepted'));
+      window.setTimeout(() => banner.remove(), 260);
+    });
+  };
+
+  setupCookieBanner();
+
   const locationMap = document.querySelector('#locationMap');
   if (locationMap) {
     const routeButton = document.querySelector('[data-route-button]');
@@ -47,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const initLocationMap = () => {
       if (!window.ymaps || locationMap.dataset.mapReady === 'true') return;
+      locationMap.innerHTML = '';
 
       const map = new window.ymaps.Map('locationMap', {
         center: [centerLat, centerLon],
@@ -70,14 +130,63 @@ document.addEventListener('DOMContentLoaded', () => {
       locationMap.dataset.mapReady = 'true';
     };
 
-    const tryInitMap = () => {
+    let yandexMapsPromise = null;
+
+    const loadYandexMapsApi = () => {
       if (window.ymaps && typeof window.ymaps.ready === 'function') {
-        window.ymaps.ready(initLocationMap);
+        return Promise.resolve(window.ymaps);
+      }
+
+      if (yandexMapsPromise) return yandexMapsPromise;
+
+      yandexMapsPromise = new Promise((resolve, reject) => {
+        const existingScript = document.querySelector('script[data-yandex-maps-api]');
+        if (existingScript) {
+          existingScript.addEventListener('load', () => resolve(window.ymaps), { once: true });
+          existingScript.addEventListener('error', reject, { once: true });
+          return;
+        }
+
+        const script = document.createElement('script');
+        script.src = 'https://api-maps.yandex.ru/2.1/?lang=ru_RU';
+        script.async = true;
+        script.defer = true;
+        script.dataset.yandexMapsApi = 'true';
+        script.addEventListener('load', () => resolve(window.ymaps), { once: true });
+        script.addEventListener('error', reject, { once: true });
+        document.head.appendChild(script);
+      });
+
+      return yandexMapsPromise;
+    };
+
+    const tryInitMap = () => {
+      if (!hasAcceptedCookieConsent()) return;
+
+      loadYandexMapsApi().then(() => {
+        if (window.ymaps && typeof window.ymaps.ready === 'function') {
+          window.ymaps.ready(initLocationMap);
+        }
+      }).catch(() => {
+        locationMap.dataset.mapReady = 'error';
+      });
+    };
+
+    const syncMapPlaceholder = () => {
+      const placeholder = locationMap.querySelector('.map-placeholder');
+      if (placeholder) {
+        placeholder.textContent = hasAcceptedCookieConsent()
+          ? 'Загружаем карту...'
+          : 'Карта загрузится после принятия cookie.';
       }
     };
 
+    syncMapPlaceholder();
     tryInitMap();
-    window.addEventListener('load', tryInitMap, { once: true });
+    window.addEventListener('cookieConsentAccepted', () => {
+      syncMapPlaceholder();
+      tryInitMap();
+    });
   }
 
   const constructionTimeline = document.querySelector('[data-construction-progress]');
