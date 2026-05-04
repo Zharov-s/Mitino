@@ -73,6 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.appendChild(banner);
     }
 
+    banner.hidden = false;
+
     const acceptButton = banner.querySelector('[data-cookie-accept]');
     const fallbackAcceptButton = banner.querySelector('.cookie-banner__button');
     (acceptButton || fallbackAcceptButton)?.addEventListener('click', () => {
