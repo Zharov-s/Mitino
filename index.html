@@ -57,7 +57,7 @@
     (function () {
       try {
         document.documentElement.classList.add(
-          window.localStorage.getItem('cookieConsent') === 'accepted'
+          window.localStorage.getItem('cookieConsent:v2') === 'accepted'
             ? 'has-cookie-consent'
             : 'needs-cookie-consent'
         );

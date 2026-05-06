@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateScrollUi();
   window.addEventListener('scroll', updateScrollUi, { passive: true });
 
-  const cookieConsentKey = 'cookieConsent';
+  const cookieConsentKey = 'cookieConsent:v2';
   let cookieConsentAcceptedInSession = false;
 
   const hasAcceptedCookieConsent = () => {
