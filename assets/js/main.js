@@ -1522,22 +1522,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
+      const payload = new FormData();
+      payload.append('_subject', 'Новая заявка с сайта Митино');
+      payload.append('_template', 'table');
+      payload.append('_captcha', 'false');
+      payload.append('Имя', String(formData.get('name') || ''));
+      payload.append('Телефон', String(formData.get('phone') || ''));
+      payload.append('Помещение', String(formData.get('lot') || 'подбор варианта'));
+      payload.append('Тип запроса', String(formData.get('request_type') || ''));
+      payload.append('Комментарий', String(formData.get('message') || ''));
+      payload.append('Страница', window.location.href);
+
       const res = await fetch('https://formsubmit.co/ajax/s.zharov@abcentrum.ru', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({
-          _subject: 'Новая заявка с сайта Митино',
-          _template: 'table',
-          _captcha: 'false',
-          Имя: String(formData.get('name') || ''),
-          Телефон: String(formData.get('phone') || ''),
-          Помещение: String(formData.get('lot') || 'подбор варианта'),
-          'Тип запроса': String(formData.get('request_type') || ''),
-          Комментарий: String(formData.get('message') || ''),
-          Страница: window.location.href,
-        }),
+        headers: { Accept: 'application/json' },
+        body: payload,
       });
-      if (!res.ok) throw new Error('network');
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || String(json.success) !== 'true') throw new Error('submit');
 
       setFormStatus('Заявка отправлена. Мы свяжемся с вами в рабочее время.', 'success');
       leadForm.reset();
