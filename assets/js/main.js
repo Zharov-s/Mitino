@@ -1522,22 +1522,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      await emailjs.send(
-        'service_h8pzgv8',
-        'template_x9vj10v',
-        {
-          name: String(formData.get('name') || ''),
-          email: 'не указан',
-          message: [
-            `Телефон: ${formData.get('phone') || ''}`,
-            `Помещение: ${formData.get('lot') || 'подбор варианта'}`,
-            `Тип запроса: ${formData.get('request_type') || ''}`,
-            `Комментарий: ${formData.get('message') || ''}`,
-            `Страница: ${window.location.href}`
-          ].join('\n')
-        },
-        { publicKey: 'NgPj9I3nl_2BgDqcR' }
-      );
+      const res = await fetch('https://formsubmit.co/ajax/s.zharov@abcentrum.ru', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: 'Новая заявка с сайта Митино',
+          _template: 'table',
+          _captcha: 'false',
+          Имя: String(formData.get('name') || ''),
+          Телефон: String(formData.get('phone') || ''),
+          Помещение: String(formData.get('lot') || 'подбор варианта'),
+          'Тип запроса': String(formData.get('request_type') || ''),
+          Комментарий: String(formData.get('message') || ''),
+          Страница: window.location.href,
+        }),
+      });
+      if (!res.ok) throw new Error('network');
 
       setFormStatus('Заявка отправлена. Мы свяжемся с вами в рабочее время.', 'success');
       leadForm.reset();
