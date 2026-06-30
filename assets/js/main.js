@@ -206,24 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  const constructionTimeline = document.querySelector('[data-construction-progress]');
-  if (constructionTimeline) {
-    if ('IntersectionObserver' in window) {
-      const constructionObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            constructionTimeline.classList.add('is-animated');
-            constructionObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.35 });
-
-      constructionObserver.observe(constructionTimeline);
-    } else {
-      constructionTimeline.classList.add('is-animated');
-    }
-  }
-
   // Hero stats counters
   const statCounters = [...document.querySelectorAll('.stat-value[data-count]')];
   const compositeCounters = [...document.querySelectorAll('.stat-value[data-counter-type="quarter-year"]')];
