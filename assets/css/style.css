@@ -785,7 +785,6 @@ select:focus-visible{
   box-shadow:var(--glass-shadow-dark), inset 0 1px 0 var(--glass-dark-highlight);
 }
 
-
 .hero-topline{
   display:inline-flex;
   width:max-content;
@@ -954,123 +953,6 @@ select:focus-visible{
   display:grid;
   grid-template-columns:repeat(4, minmax(0,1fr));
   gap:18px;
-}
-
-.rubytech-modal{
-  position:fixed;
-  right:24px;
-  bottom:24px;
-  z-index:120;
-  width:min(440px, calc(100vw - 32px));
-  opacity:0;
-  visibility:hidden;
-  pointer-events:none;
-  transform:translateY(18px);
-  transition:opacity .24s var(--ease), visibility .24s var(--ease), transform .24s var(--ease);
-}
-
-.rubytech-modal[hidden]{
-  display:none;
-}
-
-.rubytech-modal.is-active{
-  opacity:1;
-  visibility:visible;
-  pointer-events:auto;
-  transform:translateY(0);
-}
-
-.rubytech-modal-dialog{
-  position:relative;
-  width:100%;
-  padding:24px 24px 20px;
-  border:1px solid rgba(17,20,24,.12);
-  border-radius:28px;
-  background:
-    radial-gradient(circle at top right, rgba(181,154,106,.14), transparent 34%),
-    linear-gradient(180deg, rgba(251,249,246,.98), rgba(245,241,234,.96));
-  box-shadow:0 18px 48px rgba(17,20,24,.18);
-}
-
-.rubytech-modal-close{
-  position:absolute;
-  top:18px;
-  right:18px;
-  width:44px;
-  height:44px;
-  border:none;
-  border-radius:50%;
-  background:rgba(17,20,24,.06);
-  color:var(--text-strong);
-  display:grid;
-  place-items:center;
-  cursor:pointer;
-  transition:background .24s var(--ease), transform .24s var(--ease);
-}
-
-.rubytech-modal-close:hover,
-.rubytech-modal-close:focus-visible{
-  background:rgba(17,20,24,.11);
-  transform:translateY(-1px);
-}
-
-.rubytech-modal-close span{
-  font-size:28px;
-  line-height:1;
-}
-
-.rubytech-modal-brand{
-  margin-bottom:16px;
-  padding-right:42px;
-}
-
-.rubytech-modal-logo{
-  width:auto;
-  max-width:min(180px, 100%);
-  height:30px;
-  object-fit:contain;
-}
-
-.rubytech-modal-copy{
-  display:grid;
-  gap:14px;
-}
-
-.rubytech-modal-eyebrow{
-  font-size:12px;
-  font-weight:700;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  color:var(--accent);
-}
-
-.rubytech-modal-title{
-  margin:0;
-  font-size:clamp(22px, 2.2vw, 28px);
-  line-height:1.12;
-  letter-spacing:-.04em;
-  color:var(--text-strong);
-}
-
-.rubytech-modal-description{
-  margin:0;
-  max-width:360px;
-  font-size:15px;
-  line-height:1.45;
-  color:var(--muted);
-}
-
-.rubytech-modal-actions{
-  display:flex;
-  align-items:stretch;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-top:20px;
-}
-
-.rubytech-modal-primary{
-  flex:1 1 100%;
-  min-width:0;
 }
 
 .stat-card{
@@ -1489,7 +1371,6 @@ select:focus-visible{
   text-decoration:underline;
   text-underline-offset:3px;
 }
-
 
 .map-card-caption{
   margin-top:18px;
@@ -2236,7 +2117,6 @@ select:focus-visible{
   aspect-ratio:3 / 4;
   object-fit:cover;
 }
-
 
 .filter-row{
   display:flex;
@@ -3494,7 +3374,6 @@ html.has-cookie-consent .cookie-banner[data-cookie-banner]{
 
 }
 
-
 @media (max-width: 1100px){
   .lobby-card{
     flex-basis:clamp(220px, 32vw, 300px);
@@ -3737,38 +3616,6 @@ html.has-cookie-consent .cookie-banner[data-cookie-banner]{
     grid-template-columns:1fr;
   }
 
-  .rubytech-modal{
-    right:16px;
-    bottom:14px;
-    width:min(360px, calc(100vw - 20px));
-  }
-
-  .rubytech-modal-dialog{
-    padding:18px 16px 14px;
-    border-radius:20px;
-  }
-
-  .rubytech-modal-logo{
-    height:24px;
-  }
-
-  .rubytech-modal-title{
-    font-size:clamp(20px, 3vw, 24px);
-    line-height:1.14;
-  }
-
-  .rubytech-modal-description{
-    max-width:none;
-    font-size:14px;
-    line-height:1.4;
-  }
-
-  .rubytech-modal-close{
-    top:12px;
-    right:12px;
-    width:40px;
-    height:40px;
-  }
 }
 
 @media (max-width: 640px){
@@ -4291,73 +4138,6 @@ html.has-cookie-consent .cookie-banner[data-cookie-banner]{
   }
   .contact-card strong{font-size:20px}
   .rate-box strong{font-size:24px}
-
-  .rubytech-modal-dialog{
-    padding:14px 14px 12px;
-  }
-
-  .rubytech-modal-brand{
-    margin-bottom:10px;
-    padding-right:44px;
-  }
-
-  .rubytech-modal-logo{
-    height:22px;
-  }
-
-  .rubytech-modal-copy{
-    gap:10px;
-  }
-
-  .rubytech-modal-eyebrow{
-    font-size:10px;
-    letter-spacing:.14em;
-  }
-
-  .rubytech-modal-title{
-    font-size:clamp(16px, 6.2vw, 20px);
-    line-height:1.16;
-    letter-spacing:-.03em;
-  }
-
-  .rubytech-modal-description{
-    display:none;
-  }
-
-  .rubytech-modal-close{
-    top:10px;
-    right:10px;
-    width:36px;
-    height:36px;
-  }
-
-  .rubytech-modal-close span{
-    font-size:24px;
-  }
-
-  .rubytech-modal-actions{
-    margin-top:14px;
-  }
-
-  .rubytech-modal-primary{
-    width:100%;
-    min-width:0;
-    min-height:44px;
-    padding:0 12px;
-  }
-
-  .rubytech-modal-primary .tab-link-label{
-    font-size:13px;
-    letter-spacing:.02em;
-  }
-
-  .rubytech-modal-primary .tab-link-arrow{
-    width:14px;
-    height:14px;
-    flex-basis:14px;
-    border-top-width:3px;
-    border-right-width:3px;
-  }
 
 }
 
